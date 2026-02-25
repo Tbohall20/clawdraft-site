@@ -13,10 +13,9 @@
     align-items: flex-start;
     justify-content: center;
     min-height: 900px;
-    height: 900px;
-    overflow: hidden;
     font-family: system-ui, -apple-system, sans-serif;
     padding-top: 32px;
+    padding-bottom: 32px;
   }
 
   /* Phone frame */
@@ -654,6 +653,15 @@
   #msg1 { animation: bubbleIn 0.45s cubic-bezier(0.22,1,0.36,1) 2.5s forwards; }
   #msg2 { animation: bubbleIn 0.45s cubic-bezier(0.22,1,0.36,1) 3.3s forwards; }
 </style>
-
+<script>
+  function reportHeight() {
+    const h = document.documentElement.scrollHeight || document.body.scrollHeight;
+    window.parent.postMessage({ iframeHeight: h }, '*');
+  }
+  window.addEventListener('load', function() {
+    setTimeout(reportHeight, 300);
+    setTimeout(reportHeight, 1500);
+  });
+</script>
 </body>
 </html>
