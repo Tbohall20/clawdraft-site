@@ -630,11 +630,23 @@
         <div class="preview-card-body">
           <div class="tweet-item">
             <div class="tweet-num">Tweet 1 of 5</div>
-            <div id="pt1">I deleted every productivity app on my phone 6 months ago. My output went up 40%. Here's what I learned: 🧵</div>
+            <div id="pt1">Fill out the form to generate your personalised thread.</div>
           </div>
           <div class="tweet-item">
             <div class="tweet-num">Tweet 2 of 5</div>
-            <div id="pt2">The apps are designed to make you feel productive, not to make you productive. There's a difference. Notion, Todoist, Monday — they reward setup, not execution.</div>
+            <div id="pt2"></div>
+          </div>
+          <div class="tweet-item">
+            <div class="tweet-num">Tweet 3 of 5</div>
+            <div id="pt3"></div>
+          </div>
+          <div class="tweet-item">
+            <div class="tweet-num">Tweet 4 of 5</div>
+            <div id="pt4"></div>
+          </div>
+          <div class="tweet-item">
+            <div class="tweet-num">Tweet 5 of 5</div>
+            <div id="pt5"></div>
           </div>
         </div>
       </div>
@@ -707,51 +719,128 @@ document.querySelectorAll('.checkbox-label').forEach(label => {
   });
 });
 
+// Content templates by tone — each one adapts to name, niche, and audience
+var TEMPLATES = {
+  'Contrarian': {
+    tweets: function(n, niche, aud) { return [
+      `The ${niche} advice everyone gives is wrong.\n\nI tested it for 6 months. Here's what I found instead: 🧵`,
+      `Everyone in ${niche} tells you to do more. More content, more systems, more optimization.\n\nMost of it is noise. Here's what actually moves the needle.`,
+      `I asked 50 ${aud} what they changed that made the biggest difference.\n\nNone of them said "I added another tool."`,
+      `The ${niche} space rewards complexity. Long frameworks, detailed systems, endless tactics.\n\nBut the people actually winning? They've stripped everything back.`,
+      `Hot take: the best thing you can do for your ${niche} results this week is delete something, not add something.`
+    ]; },
+    newsletter: function(n, niche, aud) {
+      return `Hey ${n},\n\nEverybody in ${niche} is selling you a system. I've bought most of them.\n\nHere's what I actually learned: the more I added, the slower I got. Not because I was lazy — because complexity has a cost that nobody talks about.\n\nThis week I want to share the one change that made more difference than everything else combined. And it involves doing less, not more.`;
+    },
+    linkedin: function(n, niche, aud) {
+      return `Unpopular opinion: most ${niche} advice is making you worse, not better.\n\nNot because it's wrong in theory. Because it's designed for people with unlimited time — and ${aud} don't have that.\n\nI've watched too many people spend more time on their system than their actual work.\n\nThe unlock isn't a better framework. It's fewer decisions. Fewer tools. Fewer things to maintain.\n\nWhat's one piece of "${niche}" advice you've stopped following? I'd genuinely like to know.`;
+    },
+    youtube: function(n, niche, aud) {
+      return `"Everything the ${niche} industry tells you to do — I tried all of it. And I'm going to show you exactly where it started making things worse instead of better. This isn't theory. These are my actual numbers."`;
+    }
+  },
+  'Educational': {
+    tweets: function(n, niche, aud) { return [
+      `A thread on what actually works in ${niche} in 2025 — backed by data, not vibes 🧵`,
+      `Most ${aud} get stuck at the same three points. Understanding why is the first step to breaking through.\n\nHere's what the research actually says:`,
+      `The ${niche} fundamentals nobody teaches:\n\n— What the top performers do differently\n— Why conventional advice falls short\n— The one metric that actually predicts results`,
+      `I analyzed 6 months of data from ${aud} at different stages.\n\nThe pattern is consistent and almost nobody talks about it.`,
+      `The most valuable thing you can do for your ${niche} results this week:\n\nAudit what you're measuring, not just what you're doing.`
+    ]; },
+    newsletter: function(n, niche, aud) {
+      return `Hey ${n},\n\nI've been deep in ${niche} research this week and found something worth sharing.\n\nThere's a gap between what the ${aud} community talks about and what the data actually supports. It's not a small gap — and once you see it, you can't unsee it.\n\nThis issue breaks it down, step by step.`;
+    },
+    linkedin: function(n, niche, aud) {
+      return `3 things I wish someone had told me earlier about ${niche}:\n\n1. The starting point matters less than most people think\n2. Consistency beats optimization every single time\n3. The ${aud} who progress fastest are asking different questions, not working harder\n\nWhat would you add to this list?`;
+    },
+    youtube: function(n, niche, aud) {
+      return `"I spent 3 months going deep on what separates the top 1% in ${niche} from everyone else. The answer surprised me — and it has nothing to do with talent, resources, or the tools they use."`;
+    }
+  },
+  'Inspirational': {
+    tweets: function(n, niche, aud) { return [
+      `A year ago I was stuck. Same problems, same ceiling, same frustration with ${niche}.\n\nHere's what changed everything 🧵`,
+      `The moment I stopped comparing my ${niche} journey to everyone else's was the moment things started moving.\n\nComparison is the enemy of momentum.`,
+      `Nobody talks about the quiet phase. When you're doing the work, nobody's watching, and the results haven't shown up yet.\n\nThat phase is where ${aud} are actually built.`,
+      `What got you here won't get you there.\n\nIn ${niche}, the skills that create the first breakthrough are different from the ones that create the next one.`,
+      `The best time to invest in your ${niche} foundation was two years ago.\n\nThe second best time is now. What's one thing you're committing to this week?`
+    ]; },
+    newsletter: function(n, niche, aud) {
+      return `Hey ${n},\n\nI want to start this week with something that's been on my mind.\n\nEvery ${aud} I admire went through a phase where they couldn't see the progress. Where the work felt disconnected from the results. Where it was easier to wonder if it was worth it than to keep going.\n\nThey kept going.\n\nThis issue is about what that looks like in practice — and why the quiet phases matter more than the visible ones.`;
+    },
+    linkedin: function(n, niche, aud) {
+      return `The ${aud} I respect most all have one thing in common:\n\nThey kept showing up when there was no external reason to.\n\nNo audience yet. No feedback yet. No proof it was working yet.\n\nJust the work, and the belief that it mattered.\n\nThat's the foundation ${niche} is actually built on.\n\nWho in your world embodies this? Tag them.`;
+    },
+    youtube: function(n, niche, aud) {
+      return `"I want to tell you about a turning point in my ${niche} journey — the moment I stopped looking for the shortcut and started building the foundation. It changed everything. And I think it might be exactly what you need to hear today."`;
+    }
+  },
+  'Direct': {
+    tweets: function(n, niche, aud) { return [
+      `Here's what's actually blocking your ${niche} results. No fluff. 🧵`,
+      `The ${aud} who are winning at ${niche} right now are doing three things.\n\nMost people are doing zero of them.`,
+      `Stop overthinking ${niche} strategy.\n\nPick one thing. Do it for 90 days. Measure it.\n\nThat's the entire playbook.`,
+      `The honest truth about ${niche}: it works, but only if you're consistent longer than feels comfortable.\n\nMost people quit at the 60-day mark. Don't.`,
+      `Action this week: take one thing off your ${niche} to-do list and actually execute on it.\n\nSpeed beats perfection. Every time.`
+    ]; },
+    newsletter: function(n, niche, aud) {
+      return `Hey ${n},\n\nNo preamble this week. Here's what I've learned about ${niche} that's worth your time:\n\nThe ${aud} who make real progress have one thing in common — they decide fast and adjust faster. They're not waiting for the perfect plan.\n\nThis issue is about what that looks like in practice, with specific examples you can use today.`;
+    },
+    linkedin: function(n, niche, aud) {
+      return `Blunt take on ${niche}:\n\nMost of the complexity is manufactured.\n\nThe ${aud} getting results aren't using complicated systems. They picked a direction, cut the noise, and executed.\n\nYou probably already know what you need to do. The question is whether you'll do it.`;
+    },
+    youtube: function(n, niche, aud) {
+      return `"I'm going to skip the intro and get straight to it — here are the three things that will actually move the needle on your ${niche} results this year. Not theory. Not motivation. Specifics."`;
+    }
+  }
+};
+
 function handleSubmit() {
-  const name = document.getElementById('q1').value.trim() || 'you';
+  const name = document.getElementById('q1').value.trim() || 'there';
   const niche = document.getElementById('q2').value.trim() || 'your niche';
   const audience = document.getElementById('q3').value.trim() || 'your audience';
+  const toneInput = document.querySelector('input[name="tone"]:checked');
+  const tone = toneInput ? toneInput.value : 'Direct';
 
-  // Hide form
   document.getElementById('formCard').style.display = 'none';
 
-  // Show loading
   const lo = document.getElementById('loadingOverlay');
   lo.classList.add('show');
 
-  // Animate loading steps
-  const steps = ['ls0','ls1','ls2','ls3'];
-  steps.forEach((id, i) => {
-    setTimeout(() => {
-      document.getElementById(id).classList.add('done');
-    }, 300 + i * 400);
+  ['ls0','ls1','ls2','ls3'].forEach((id, i) => {
+    setTimeout(() => document.getElementById(id).classList.add('done'), 300 + i * 450);
   });
 
-  // After 2s, show preview
   setTimeout(() => {
     lo.classList.remove('show');
-    showPreview(name, niche, audience);
-  }, 2200);
+    showPreview(name, niche, audience, tone);
+  }, 2400);
 }
 
-function showPreview(name, niche, audience) {
-  // Personalize
+function showPreview(name, niche, audience, tone) {
+  const tmpl = TEMPLATES[tone] || TEMPLATES['Direct'];
+  const tweets = tmpl.tweets(name, niche, audience);
+
   document.getElementById('previewName').textContent = name;
 
-  // Newsletter with name swap
-  document.getElementById('pNewsletter').textContent =
-    `Hey ${name},\n\nThere's a tax on your time that doesn't show up in your calendar.\n\nIt's called tool-switching — and for most ${audience || 'solopreneurs'}, it's eating 60-90 minutes every single day. Not in one block. In fragments.`;
+  // Build tweet HTML
+  const tweetContainer = document.querySelector('.preview-card-body .tweet-item')
+    ? document.querySelector('.preview-card-body') : null;
 
-  // LinkedIn with niche
-  document.getElementById('pLinkedin').textContent =
-    `Hot take: The most productive ${audience || 'people'} I know use the fewest tools.\n\nNot the most sophisticated stack. Not the most optimized system. The fewest tools.\n\nI've been watching a thread blow up this week about ${niche || 'productivity'} — and the signal is clear.`;
+  // Replace tweet placeholders
+  tweets.forEach((text, i) => {
+    const el = document.getElementById('pt' + (i+1));
+    if (el) el.textContent = text;
+  });
 
-  // YouTube hook
-  document.getElementById('pYoutube').textContent =
-    `"Everything you know about ${niche || 'productivity'} is being disrupted. The $96 billion productivity software industry needs you to feel disorganized — and I'm going to show you what 4,100 people just figured out."`;
+  document.getElementById('pNewsletter').textContent = tmpl.newsletter(name, niche, audience);
+  document.getElementById('pLinkedin').textContent = tmpl.linkedin(name, niche, audience);
+  document.getElementById('pYoutube').textContent = tmpl.youtube(name, niche, audience);
 
   document.getElementById('previewSection').classList.add('show');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (typeof reportHeight === 'function') setTimeout(reportHeight, 400);
 }
 
 function resetDemo() {
