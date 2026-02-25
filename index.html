@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clawdraft — Your entire week of content, written in your voice.</title>
+  <meta name="description" content="Clawdraft wakes up every morning, scrapes trending topics in your niche, and delivers a full week of content to your WhatsApp every Sunday night — X threads, newsletters, LinkedIn posts, and YouTube scripts — all written in your voice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0a0a0b;
+      --bg-2:        #111113;
+      --bg-3:        #18181c;
+      --border:      #222228;
+      --border-2:    #2e2e38;
+      --text:        #f0f0f2;
+      --text-2:      #9898a8;
+      --text-3:      #5a5a6a;
+      --accent:      #7c6af7;
+      --accent-glow: rgba(124, 106, 247, 0.18);
+      --accent-2:    #a78bfa;
+      --green:       #34d399;
+      --green-bg:    rgba(52, 211, 153, 0.08);
+      --gold:        #f59e0b;
+      --gold-bg:     rgba(245, 158, 11, 0.08);
+      --radius:      12px;
+      --radius-lg:   20px;
+      --max-w:       760px;
+      --font:        'Inter', sans-serif;
+      --mono:        'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { display: block; max-width: 100%; }
+
+    /* ─── Layout Helpers ─────────────────────────────────────── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: 96px 0;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── Nav ────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 11, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent); }
+      50%       { opacity: 0.6; box-shadow: 0 0 4px var(--accent); }
+    }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-2);
+      background: var(--accent-glow);
+      border: 1px solid rgba(124, 106, 247, 0.3);
+      padding: 7px 16px;
+      border-radius: 8px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: rgba(124, 106, 247, 0.26);
+      border-color: rgba(124, 106, 247, 0.55);
+    }
+
+    /* ─── Hero ───────────────────────────────────────────────── */
+    .hero {
+      padding: 100px 0 80px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      background: var(--accent-glow);
+      border: 1px solid rgba(124, 106, 247, 0.25);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      max-width: 680px;
+      margin: 0 auto 24px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent-2);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-2);
+      max-width: 540px;
+      margin: 0 auto 48px;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-with-note {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-savings {
+      font-size: 12px;
+      color: var(--text-3);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-savings s {
+      color: var(--text-3);
+      text-decoration-color: var(--text-3);
+    }
+
+    /* ─── Buttons ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      border: none;
+      outline: none;
+      text-decoration: none;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(124, 106, 247, 0.35);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 32px rgba(124, 106, 247, 0.5); }
+
+    .btn-hero {
+      font-size: 17px;
+      padding: 18px 48px;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.4), 0 8px 40px rgba(124, 106, 247, 0.45);
+      letter-spacing: -0.1px;
+    }
+    .btn-hero:hover {
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.6), 0 12px 52px rgba(124, 106, 247, 0.6);
+    }
+
+    .btn-secondary {
+      background: var(--bg-3);
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
+    }
+    .btn-secondary:hover { color: var(--text); border-color: #444; }
+
+    /* ─── Social Proof Bar ───────────────────────────────────── */
+    .proof-bar {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      text-align: center;
+    }
+
+    .proof-bar p {
+      font-size: 13px;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .proof-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .proof-item .icon { font-size: 14px; }
+
+    /* ─── Pain Section ───────────────────────────────────────── */
+    .pain-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 40px;
+    }
+
+    .pain-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 20px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .pain-x {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #f87171;
+      margin-top: 1px;
+    }
+
+    .pain-item p {
+      font-size: 15px;
+      color: var(--text-2);
+    }
+
+    /* ─── Section Labels ─────────────────────────────────────── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--text-2);
+      max-width: 560px;
+      line-height: 1.65;
+    }
+
+    /* ─── How It Works ───────────────────────────────────────── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 52px;
+      position: relative;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 44px;
+      bottom: 44px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      padding: 28px 0;
+    }
+
+    .step + .step {
+      border-top: 1px solid var(--border);
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      border: 1px solid rgba(124, 106, 247, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ─── WhatsApp Preview ───────────────────────────────────── */
+    .mockup-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 0;
+      background: var(--bg-2);
+    }
+
+    .mockup-label {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 28px;
+    }
+
+    .phone-mockup {
+      margin: 0 auto;
+      max-width: 400px;
+      background: var(--bg-2);
+      border: 1px solid var(--border-2);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .phone-header {
+      background: #1a2c23;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .phone-avatar {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .phone-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .phone-status {
+      font-size: 11px;
+      color: #34d399;
+    }
+
+    .phone-messages {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message-bubble {
+      background: #1e3a2f;
+      border: 1px solid #2a4d3c;
+      border-radius: 4px 12px 12px 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #d4f0e2;
+      position: relative;
+    }
+
+    .message-bubble::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -5px;
+      width: 10px;
+      height: 10px;
+      background: #1e3a2f;
+      clip-path: polygon(100% 0, 100% 100%, 0 0);
+    }
+
+    .bubble-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #6ee7b7;
+      margin-bottom: 6px;
+    }
+
+    .bubble-preview {
+      color: #9bccb4;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .message-time {
+      font-size: 10px;
+      color: var(--text-3);
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    /* ─── What's Included ────────────────────────────────────── */
+    .formats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 44px;
+    }
+
+    @media (max-width: 560px) {
+      .formats-grid { grid-template-columns: 1fr; }
+    }
+
+    .format-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      transition: border-color 0.2s;
+    }
+
+    .format-card:hover { border-color: var(--border-2); }
+
+    .format-icon {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .format-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .format-card p {
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.55;
+    }
+
+    .format-spec {
+      display: inline-block;
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent-2);
+      background: var(--accent-glow);
+      padding: 3px 9px;
+      border-radius: 100px;
+    }
+
+    /* ─── Requirements ───────────────────────────────────────── */
+    .req-list {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .req-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-2);
+    }
+
+    .req-check {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--green-bg);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: var(--green);
+    }
+
+    /* ─── Differentiator ─────────────────────────────────────── */
+    .diff-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-top: 44px;
+    }
+
+    .diff-box p {
+      font-size: 16px;
+      color: var(--text-2);
+      line-height: 1.75;
+    }
+
+    .diff-box strong { color: var(--text); }
+
+    .diff-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 500px) {
+      .diff-compare { grid-template-columns: 1fr; }
+    }
+
+    .diff-col h4 {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .diff-col.bad h4  { color: #f87171; }
+    .diff-col.good h4 { color: var(--green); }
+
+    .diff-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .diff-col li {
+      font-size: 14px;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diff-col.bad  li::before { content: '✕'; color: #f87171; font-size: 11px; }
+    .diff-col.good li::before { content: '✓'; color: var(--green); font-size: 11px; }
+
+    /* ─── Pricing ────────────────────────────────────────────── */
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 40px;
+      padding-top: 24px;
+      overflow: visible;
+    }
+
+    @media (max-width: 600px) {
+      .pricing-cards { grid-template-columns: 1fr; }
+    }
+
+    .pricing-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: visible;
+      transition: border-color 0.2s;
+    }
+
+    .pricing-card.featured {
+      border-color: rgba(124, 106, 247, 0.45);
+      background: linear-gradient(160deg, rgba(124, 106, 247, 0.07) 0%, var(--bg-2) 60%);
+    }
+
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .pricing-founder {
+      position: absolute;
+      top: -12px;
+      right: 24px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .pricing-tier {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 8px;
+    }
+
+    .pricing-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .pricing-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      margin-bottom: 28px;
+      line-height: 1.55;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .price-amount {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .price-was {
+      font-size: 18px;
+      color: var(--text-3);
+      text-decoration: line-through;
+    }
+
+    .price-note {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-bottom: 28px;
+    }
+
+    .price-note.gold { color: var(--gold); }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-grow: 1;
+    }
+
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--text-2);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--green);
+      font-size: 12px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .pricing-card .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ─── Add-on Card ───────────────────────────────────────── */
+    .pricing-addon {
+      margin-top: 16px;
+    }
+
+    .addon-card {
+      background: var(--bg);
+      border: 1px dashed var(--border-2);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 600px) {
+      .addon-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .addon-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 6px;
+    }
+
+    .addon-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .addon-desc {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      max-width: 460px;
+    }
+
+    .addon-features {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+    }
+
+    .addon-features li {
+      font-size: 13px;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .addon-features li::before {
+      content: '✓';
+      color: var(--green);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .addon-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      padding-top: 4px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .addon-cta { align-items: flex-start; }
+    }
+
+    .addon-price {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .addon-price-note {
+      font-size: 11px;
+      color: var(--text-3);
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      .addon-price-note { text-align: left; }
+    }
+
+    /* ─── FAQ ────────────────────────────────────────────────── */
+    .faq-list {
+      margin-top: 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .faq-item {
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 22px 0;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--font);
+    }
+
+    .faq-q:hover { color: var(--accent-2); }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      background: var(--bg-3);
+      border: 1px solid var(--border-2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: var(--text-3);
+      transition: transform 0.25s, background 0.2s;
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+      background: var(--accent-glow);
+      color: var(--accent-2);
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.7;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, padding 0.25s ease;
+      padding: 0 0 0;
+    }
+
+    .faq-a-inner {
+      padding-bottom: 22px;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 300px;
+    }
+
+    /* ─── Final CTA ──────────────────────────────────────────── */
+    .final-cta {
+      text-align: center;
+      padding: 96px 0;
+    }
+
+    .final-cta .section-label { margin-bottom: 16px; }
+
+    .final-cta h2 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      max-width: 520px;
+      margin: 0 auto 16px;
+    }
+
+    .final-cta p {
+      font-size: 16px;
+      color: var(--text-2);
+      max-width: 420px;
+      margin: 0 auto 40px;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--text-3);
+    }
+
+    footer a {
+      color: var(--text-3);
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    footer a:hover {
+      color: var(--text-2);
+      border-color: var(--text-3);
+    }
+
+    /* ─── Founder strip ──────────────────────────────────────── */
+    .founder-strip {
+      background: var(--gold-bg);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .founder-strip .icon { font-size: 20px; flex-shrink: 0; }
+
+    .founder-strip p {
+      font-size: 14px;
+      color: var(--text-2);
+    }
+
+    .founder-strip strong { color: var(--gold); }
+
+    /* ─── Misc ───────────────────────────────────────────────── */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 640px) {
+      .section { padding: 64px 0; }
+      .hero { padding: 64px 0 56px; }
+      .diff-box { padding: 24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Nav ───────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-dot"></div>
+        Clawdraft
+      </div>
+      <a href="#pricing" class="nav-cta">See pricing →</a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ──────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">
+        <span>⚡</span> For solo creators who are done with the grind
+      </div>
+      <h1>Your entire week of content,<br /><em>written in your voice,</em><br />every Sunday night.</h1>
+      <p class="hero-sub">
+        Clawdraft wakes up at 6am, scrapes what's trending in your niche,
+        and delivers 4 ready-to-publish pieces to your WhatsApp every Sunday at 8pm.
+        You review. You post. That's it.
+      </p>
+      <div class="hero-actions">
+        <div class="btn-with-note">
+          <a href="#buy-dfy" class="btn btn-primary btn-hero">Get Done-For-You — $297</a>
+          <span class="btn-savings">reg. <s>$497</s> · founder pricing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Proof Bar ──────────────────────────────────── -->
+  <div class="proof-bar">
+    <p>
+      <span class="proof-item"><span class="icon">🔐</span> You own everything. No subscription.</span>
+      <span class="proof-item"><span class="icon">📱</span> Delivered to WhatsApp</span>
+      <span class="proof-item"><span class="icon">✍️</span> Written in your voice</span>
+      <span class="proof-item"><span class="icon">💸</span> ~$5–15/mo in API costs</span>
+    </p>
+  </div>
+
+  <!-- ── The Problem ────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">The problem</div>
+      <h2 class="section-title">Content production is eating your week.</h2>
+      <p class="section-sub">
+        You started creating because you had something to say. Now you're spending
+        10+ hours a week just keeping up.
+      </p>
+      <div class="pain-list">
+        <div class="pain-item">
+          <div class="pain-x">✕</div>
+          <p>Sunday mornings spent staring at a blank document, not knowing what to write about this week.</p>
+        </div>
+        <div class="pain-item">
+          <div class="pain-x">✕</div>
+          <p>Paying $50–$200/month for AI tools that spit out generic content that doesn't sound like you at all.</p>
+        </div>
+        <div class="pain-item">
+          <div class="pain-x">✕</div>
+          <p>Your best ideas get lost because there's no system — just vibes and pressure.</p>
+        </div>
+        <div class="pain-item">
+          <div class="pain-x">✕</div>
+          <p>You know what to say. You just don't have time to say it across every platform, every week.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How It Works ───────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Set it up once.<br />It runs every week.</h2>
+      <p class="section-sub">
+        No dashboard to check. No prompts to write. Just five messages on Sunday night
+        and a full week of content waiting for you.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Fill out a 15-minute brand voice questionnaire</h3>
+            <p>You tell Clawdraft who you are — your niche, your tone, your audience, your opinions. This becomes the voice profile that every piece is written in.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Agent scrapes your niche every morning at 6am</h3>
+            <p>Clawdraft monitors trending topics, X conversations, newsletter subjects, and YouTube angles in your specific niche. Automatically. Every day.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Sunday at 8pm — 5 WhatsApp messages arrive</h3>
+            <p>A batch header telling you what's in the drop, followed by four copy-paste ready pieces: X thread, newsletter draft, LinkedIn post, YouTube script. Each is a separate message, formatted exactly how it'll be published.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>You review, edit if you want, and post</h3>
+            <p>That's your entire content workflow. Most creators spend 20–30 minutes on Sunday reviewing. The rest of the week is yours.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <h3>Gets sharper over time</h3>
+            <p>As you give feedback on what landed, Clawdraft refines the voice profile. After a month, the output barely needs editing.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WhatsApp Preview ───────────────────────────── -->
+  <div class="mockup-section">
+    <div class="container">
+      <p class="mockup-label">What it looks like in your WhatsApp</p>
+      <div class="phone-mockup">
+        <div class="phone-header">
+          <div class="phone-avatar">🐾</div>
+          <div>
+            <div class="phone-name">Clawdraft</div>
+            <div class="phone-status">● delivered</div>
+          </div>
+        </div>
+        <div class="phone-messages">
+          <div class="message-bubble">
+            <div class="bubble-tag">📦 Weekly content drop</div>
+            Week of Feb 24. Topics: AI fatigue, creator burnout, making content that doesn't feel like content. 4 pieces attached below.
+            <div class="message-time">Sun 8:00 PM ✓✓</div>
+          </div>
+          <div class="message-bubble">
+            <div class="bubble-tag">🐦 X Thread</div>
+            Everyone's automating content. Here's why most of it will fail — and what actually works instead.
+            <div class="bubble-preview">1/ The problem isn't the AI. It's that most people are using it to write faster in a voice that was never theirs...</div>
+            <div class="message-time">Sun 8:00 PM ✓✓</div>
+          </div>
+          <div class="message-bubble">
+            <div class="bubble-tag">📧 Newsletter Draft</div>
+            Subject: The content creator's trap nobody talks about
+            <div class="bubble-preview">400 words · structured · your tone · ready to paste into Beehiiv...</div>
+            <div class="message-time">Sun 8:01 PM ✓✓</div>
+          </div>
+          <div class="message-bubble">
+            <div class="bubble-tag">🎬 YouTube Script</div>
+            ~11 min · 5 sections · timestamps included · starts in media res
+            <div class="bubble-preview">[0:00] Hook: You're creating more than ever and growing slower than ever...</div>
+            <div class="message-time">Sun 8:01 PM ✓✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Formats ─────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">What you get every week</div>
+      <h2 class="section-title">Four pieces. Four platforms.<br />All in your voice.</h2>
+      <p class="section-sub">
+        Each format is built to spec — not just "a piece of content" but the right
+        length, structure, and style for that specific platform.
+      </p>
+
+      <div class="formats-grid">
+        <div class="format-card">
+          <div class="format-icon">🐦</div>
+          <h3>X / Twitter Thread</h3>
+          <p>7 tweets. Hook, body, punchy closer. Written to stop the scroll, not to chase follows.</p>
+          <div class="format-spec">7 tweets</div>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">📧</div>
+          <h3>Newsletter Draft</h3>
+          <p>400–600 words. Structured and personal — reads like a letter from someone who knows their readers.</p>
+          <div class="format-spec">400–600 words</div>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">💼</div>
+          <h3>LinkedIn Post</h3>
+          <p>150–300 words. Plain text. Closes on a philosophy or observation — never a desperate CTA.</p>
+          <div class="format-spec">150–300 words</div>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">🎬</div>
+          <h3>YouTube Script</h3>
+          <p>~11 minutes. Five sections with timestamps. Starts in the middle of something. Ready to record as-is.</p>
+          <div class="format-spec">~11 min · 5 sections</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What Makes It Different ────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Why this is different</div>
+      <h2 class="section-title">Not another ChatGPT wrapper.</h2>
+      <p class="section-sub">
+        Most AI content tools are just a fancy prompt box. Clawdraft is a real autonomous agent
+        running on your machine.
+      </p>
+
+      <div class="diff-box">
+        <p>
+          <strong>You own everything.</strong> The agent runs on your computer, using your API key, connected to your WhatsApp.
+          No middleman, no vendor, no data leaving your machine except to Anthropic's API — which you're already paying for directly.
+          <strong>One payment. No subscription. No price hikes.</strong> Set it up once and it runs forever.
+        </p>
+
+        <div class="diff-compare">
+          <div class="diff-col bad">
+            <h4>Every other AI tool</h4>
+            <ul>
+              <li>Monthly subscription ($50–200/mo)</li>
+              <li>Generic output, wrong voice</li>
+              <li>You're the product (your data)</li>
+              <li>Price hikes, feature removals</li>
+              <li>Vendor lock-in</li>
+            </ul>
+          </div>
+          <div class="diff-col good">
+            <h4>Clawdraft</h4>
+            <ul>
+              <li>One-time setup, no recurring fees</li>
+              <li>Trained on your specific voice</li>
+              <li>Runs on your machine, your keys</li>
+              <li>Open source foundation</li>
+              <li>You own it forever</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top: 48px;">What you need</div>
+      <div class="req-list">
+        <div class="req-item">
+          <div class="req-check">✓</div>
+          A computer (Mac, Windows, or Linux)
+        </div>
+        <div class="req-item">
+          <div class="req-check">✓</div>
+          An Anthropic API key (~$5–15/month — pay Anthropic directly, not us)
+        </div>
+        <div class="req-item">
+          <div class="req-check">✓</div>
+          A WhatsApp account
+        </div>
+        <div class="req-item">
+          <div class="req-check">✓</div>
+          That's it. Everything else is free and open source.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pricing ─────────────────────────────────────── -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">Pay once. Run forever.</h2>
+      <p class="section-sub">
+        No monthly fee. No per-seat pricing. You pay once, you own it.
+      </p>
+
+      <div class="founder-strip">
+        <div class="icon">🏅</div>
+        <p>
+          <strong>Founder pricing:</strong> The first 10 customers get Done-For-You at $297 — <s>$497</s>.
+          Once they're gone, they're gone.
+        </p>
+      </div>
+
+      <div class="pricing-cards">
+
+        <!-- DIY -->
+        <div class="pricing-card">
+          <div class="pricing-tier">DIY Kit</div>
+          <h3>Do It Yourself</h3>
+          <p class="pricing-desc">Everything you need to set up Clawdraft yourself. Config files, brand voice template, setup guide, and a Loom walkthrough.</p>
+          <div class="price-row">
+            <span class="price-amount">$297</span>
+          </div>
+          <p class="price-note">One-time. No subscription.</p>
+          <p class="price-note">Delivery frequency configurable — weekly by default.</p>
+          <ul class="pricing-features">
+            <li>All config files and templates</li>
+            <li>Brand voice questionnaire</li>
+            <li>Step-by-step setup guide</li>
+            <li>Loom walkthrough video</li>
+            <li>OpenClaw + agent pre-configured</li>
+            <li>Email support</li>
+          </ul>
+          <a href="#buy-diy" class="btn btn-secondary">Get the DIY Kit — $297</a>
+        </div>
+
+        <!-- DFY -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Most popular</div>
+          <div class="pricing-founder">🏅 Founder: $297</div>
+          <div class="pricing-tier">Done-For-You</div>
+          <h3>We Set It Up</h3>
+          <p class="pricing-desc">We handle everything. You show up to one call, we handle the rest. First batch reviewed together before you're on your own.</p>
+          <div class="price-row">
+            <span class="price-amount">$297</span>
+            <span class="price-was">$497</span>
+          </div>
+          <p class="price-note gold">⏳ Limited founder pricing — 10 spots</p>
+          <p class="price-note">Delivery frequency configurable — weekly by default.</p>
+          <ul class="pricing-features">
+            <li>Everything in DIY Kit</li>
+            <li>45-minute onboarding call</li>
+            <li>Full brand voice configuration</li>
+            <li>First batch reviewed together</li>
+            <li>30 days of refinements</li>
+            <li>Priority email + WhatsApp support</li>
+          </ul>
+          <a href="#buy-dfy" class="btn btn-primary">Get Done-For-You — $297</a>
+        </div>
+
+      </div>
+
+      <!-- Add-on -->
+      <div class="pricing-addon">
+        <div class="addon-card">
+          <div>
+            <div class="addon-tag">Add-on — available with either plan</div>
+            <h3>Frequency Upgrade</h3>
+            <p class="addon-desc">Want content more than once a week? We reconfigure your delivery schedule to run 2x or 3x per week — Sunday + Wednesday, or Monday / Wednesday / Friday. Same voice, same formats, more output.</p>
+            <ul class="addon-features">
+              <li>Choose 2x or 3x weekly delivery</li>
+              <li>We handle the reconfiguration</li>
+              <li>Works with DIY Kit or Done-For-You</li>
+              <li>One-time fee, no recurring cost</li>
+            </ul>
+          </div>
+          <div class="addon-cta">
+            <div class="addon-price">$99</div>
+            <div class="addon-price-note">One-time. No subscription.</div>
+            <a href="#buy-upgrade" class="btn btn-secondary" style="font-size:13px; padding:10px 18px; margin-top:4px;">Add Frequency Upgrade — $99</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FAQ ─────────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Questions</div>
+      <h2 class="section-title">Common questions.</h2>
+
+      <div class="faq-list" id="faq">
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Do I need to be technical to set this up?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              The DIY Kit assumes you're comfortable following a setup guide and can paste commands into a terminal. If that sounds intimidating, the Done-For-You option is what most people go for — we handle the entire setup on our end and walk you through it on a call.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            How does it know my voice?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              You fill out a detailed brand voice questionnaire — about 15 minutes. It covers your opinions, tone, what you never say, examples of your best content, and how you write. This becomes a voice profile that every piece is generated against. It improves as you give feedback on what lands.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            What does it cost to run after setup?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              Just your Anthropic API costs — typically $5–15/month depending on usage. You pay Anthropic directly; we don't touch that money. Everything else (the agent, the framework, WhatsApp connection) is free and open source.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Does the content actually sound like me?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              First batch: close, but you'll want to edit. By week 4: most people are posting with minimal changes. The voice profile sharpens as it learns what you keep, what you cut, and what you rewrite. It's not magic — it's calibration.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            What if I don't like what it produces?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              You never have to post anything you don't like. The Done-For-You plan includes 30 days of refinements — if the output is consistently off, we'll work through it with you. The DIY Kit has email support. In either case, you're not locked into anything.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Why WhatsApp instead of email or a dashboard?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              Because you already live in WhatsApp. No new app to check, no dashboard to log into. The content shows up where you are, formatted as separate messages so you can forward each one directly to your publishing tool. Copy, paste, done.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Is this a subscription?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              No. You pay once. The agent runs on your machine indefinitely. If Anthropic's API pricing changes, that's between you and Anthropic — we're not in that chain. You own the setup, the config, and the output. Forever.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q">
+            Can I get content more than once a week?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">
+              Yes. Clawdraft can be configured to run 2–3 times per week instead of just Sundays. Done-For-You customers set their preferred schedule during onboarding. DIY customers get instructions in the setup guide.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Final CTA ──────────────────────────────────── -->
+  <section class="final-cta">
+    <div class="container">
+      <div class="section-label">Ready?</div>
+      <h2>Stop writing your week.<br />Start shipping it.</h2>
+      <p>First 10 customers get Done-For-You at $297. After that, it goes to $497.</p>
+      <div class="hero-actions">
+        <a href="#buy-dfy" class="btn btn-primary">Get Done-For-You — $297</a>
+        <a href="#buy-diy" class="btn btn-secondary">DIY Kit — $297</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer>
+    <p>
+      © 2026 Clawdraft · <a href="mailto:hello@clawdraft.app">hello@clawdraft.app</a>
+      · Built on <a href="https://openclaw.ai" target="_blank" rel="noopener">OpenClaw</a>
+    </p>
+  </footer>
+
+  <!-- ── JS: FAQ accordion ──────────────────────────── -->
+  <script>
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        // close all
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        // open this one if it wasn't already
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
