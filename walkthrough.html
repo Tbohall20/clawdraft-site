@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clawdraft — Pipeline Walkthrough</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: #1a1a1a;
+    --blue: #3b82f6;
+    --green: #25d366;
+    --text: #ffffff;
+    --muted: #888888;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 32px 20px;
+    overflow-x: hidden;
+  }
+
+  /* Header */
+  .wt-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .wt-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .wt-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  /* Progress indicator */
+  .progress-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    align-items: center;
+  }
+
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px 6px 8px;
+    border-radius: 100px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .step-pill:hover {
+    border-color: #444;
+  }
+
+  .step-pill.active {
+    background: rgba(59,130,246,0.12);
+    border-color: var(--blue);
+  }
+
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+  }
+
+  .step-pill.active .step-num {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  .step-pill.done .step-num {
+    background: rgba(37,211,102,0.2);
+    color: var(--green);
+  }
+
+  .step-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color 0.4s ease;
+    white-space: nowrap;
+  }
+
+  .step-pill.active .step-label { color: var(--blue); }
+
+  .step-connector {
+    width: 24px;
+    height: 1px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  /* Stage container */
+  .stage {
+    width: 100%;
+    max-width: 680px;
+    min-height: 420px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Stage panels — all stacked, toggled by class */
+  .panel {
+    position: absolute;
+    inset: 0;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+
+  .panel.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .panel-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--blue);
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ==================== STEP 1: Brand Voice ==================== */
+  .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.4s ease;
+  }
+
+  .form-row.appear {
+    opacity: 1;
+    transform: none;
+  }
+
+  .form-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .form-field {
+    background: #1a1a1a;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text);
+    position: relative;
+  }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background: var(--blue);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: rgba(59,130,246,0.12);
+    border: 1px solid rgba(59,130,246,0.3);
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  /* ==================== STEP 2: Reddit ==================== */
+  .reddit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .reddit-card {
+    background: #151515;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: all 0.4s ease;
+  }
+
+  .reddit-card.appear {
+    opacity: 1;
+    transform: none;
+  }
+
+  .reddit-card.selected {
+    border-color: var(--blue);
+    background: rgba(59,130,246,0.06);
+  }
+
+  .upvote-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 44px;
+  }
+
+  .upvote-arrow {
+    font-size: 18px;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  .reddit-card.selected .upvote-arrow { color: #ff6314; }
+
+  .upvote-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+
+  .reddit-card.selected .upvote-count { color: #ff6314; }
+
+  .reddit-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .selected-badge {
+    background: var(--blue);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 100px;
+    opacity: 0;
+    transition: opacity 0.4s 0.3s;
+  }
+
+  .reddit-card.selected .selected-badge { opacity: 1; }
+
+  /* ==================== STEP 3: Content Gen ==================== */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .gen-card {
+    background: #151515;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    min-height: 120px;
+  }
+
+  .gen-card.appear { opacity: 1; }
+
+  .gen-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .gen-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  .gen-card.done .gen-dot { animation: none; background: var(--green) !important; }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .gen-text {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    min-height: 60px;
+  }
+
+  /* ==================== STEP 4: WhatsApp ==================== */
+  .step4-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 32px;
+  }
+
+  .mini-phone {
+    width: 160px;
+    height: 310px;
+    background: #1c1c1e;
+    border-radius: 24px;
+    box-shadow:
+      0 0 0 1.5px #3a3a3c,
+      0 20px 40px rgba(0,0,0,0.6);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .mini-phone.appear {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mini-status {
+    background: #111;
+    padding: 10px 10px 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .mini-wa-header {
+    background: #1f2c34;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #2a3942;
+  }
+
+  .mini-avatar {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .mini-contact {
+    font-size: 9px;
+    font-weight: 600;
+    color: #e9edef;
+  }
+
+  .mini-chat {
+    flex: 1;
+    background: #0b141a;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .mini-bubble {
+    background: #1f2c34;
+    border-radius: 8px 8px 8px 2px;
+    padding: 7px 9px;
+    font-size: 8.5px;
+    color: #e9edef;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    max-width: 90%;
+  }
+
+  .mini-bubble.appear {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mini-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.4s 0.3s ease;
+  }
+
+  .mini-cards.appear { opacity: 1; }
+
+  .mini-card {
+    background: #2a3942;
+    border-radius: 5px;
+    padding: 4px 6px;
+    font-size: 8px;
+    color: #e9edef;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .delivery-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .delivery-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #151515;
+    border: 1px solid #1e1e1e;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateX(12px);
+    transition: all 0.4s ease;
+  }
+
+  .delivery-stat.appear {
+    opacity: 1;
+    transform: none;
+  }
+
+  .delivery-icon {
+    font-size: 22px;
+    width: 32px;
+    text-align: center;
+  }
+
+  .delivery-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .delivery-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .check-mark {
+    margin-left: auto;
+    color: var(--green);
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.3s 0.4s;
+  }
+
+  .delivery-stat.appear .check-mark { opacity: 1; }
+
+  /* Timer / step indicator */
+  .wt-footer {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .step-timer {
+    width: 200px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .step-timer-fill {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 2px;
+    width: 0%;
+    transition: width linear;
+  }
+
+  .step-counter {
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="wt-header">
+  <div class="wt-label">How it works</div>
+  <div class="wt-title">The Clawdraft Pipeline</div>
+</div>
+
+<!-- Progress pills -->
+<div class="progress-bar">
+  <div class="step-pill active" id="pill-0">
+    <div class="step-num">1</div>
+    <div class="step-label">Brand Voice</div>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-pill" id="pill-1">
+    <div class="step-num">2</div>
+    <div class="step-label">Reddit Trends</div>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-pill" id="pill-2">
+    <div class="step-num">3</div>
+    <div class="step-label">Content Gen</div>
+  </div>
+  <div class="step-connector"></div>
+  <div class="step-pill" id="pill-3">
+    <div class="step-num">4</div>
+    <div class="step-label">Delivery</div>
+  </div>
+</div>
+
+<!-- Stage -->
+<div class="stage">
+
+  <!-- PANEL 1: Brand Voice Setup -->
+  <div class="panel active" id="panel-0">
+    <div class="panel-title">Step 1 — Brand Voice Setup</div>
+    <div class="form-grid">
+      <div class="form-row" id="f1">
+        <div class="form-label">Creator name</div>
+        <div class="form-field"><span id="t-name"></span><span class="cursor-blink" id="c1"></span></div>
+      </div>
+      <div class="form-row" id="f2">
+        <div class="form-label">Content niche</div>
+        <div class="form-field"><span id="t-niche"></span><span class="cursor-blink" id="c2" style="display:none"></span></div>
+      </div>
+      <div class="form-row" id="f3">
+        <div class="form-label">Tone</div>
+        <div class="form-field">
+          <div class="tag-row" id="toneRow"></div>
+        </div>
+      </div>
+      <div class="form-row" id="f4">
+        <div class="form-label">Platforms</div>
+        <div class="form-field">
+          <div class="tag-row" id="platformRow"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: Reddit Scraping -->
+  <div class="panel" id="panel-1">
+    <div class="panel-title">Step 2 — Reddit Trend Scraping</div>
+    <div class="reddit-list">
+      <div class="reddit-card" id="rc0">
+        <div class="upvote-col">
+          <div class="upvote-arrow">▲</div>
+          <div class="upvote-count">4.1K</div>
+        </div>
+        <div class="reddit-text">"Why I stopped using Notion and went back to plain text"</div>
+        <div class="selected-badge">SELECTED ⭐</div>
+      </div>
+      <div class="reddit-card" id="rc1">
+        <div class="upvote-col">
+          <div class="upvote-arrow">▲</div>
+          <div class="upvote-count">2.3K</div>
+        </div>
+        <div class="reddit-text">"Is the 4-day work week viable for solo operators?"</div>
+        <div class="selected-badge">SELECTED ⭐</div>
+      </div>
+      <div class="reddit-card" id="rc2">
+        <div class="upvote-col">
+          <div class="upvote-arrow">▲</div>
+          <div class="upvote-count">1.8K</div>
+        </div>
+        <div class="reddit-text">"I replaced my morning routine with one 15-minute review"</div>
+        <div class="selected-badge">SELECTED ⭐</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: Content Generation -->
+  <div class="panel" id="panel-2">
+    <div class="panel-title">Step 3 — Content Generation</div>
+    <div class="content-grid">
+      <div class="gen-card" id="gc0">
+        <div class="gen-card-header">
+          <div class="gen-dot" style="background:#1d9bf0"></div>
+          X Thread
+        </div>
+        <div class="gen-text" id="gt0"></div>
+      </div>
+      <div class="gen-card" id="gc1">
+        <div class="gen-card-header">
+          <div class="gen-dot" style="background:#3b82f6"></div>
+          Newsletter
+        </div>
+        <div class="gen-text" id="gt1"></div>
+      </div>
+      <div class="gen-card" id="gc2">
+        <div class="gen-card-header">
+          <div class="gen-dot" style="background:#0a66c2"></div>
+          LinkedIn
+        </div>
+        <div class="gen-text" id="gt2"></div>
+      </div>
+      <div class="gen-card" id="gc3">
+        <div class="gen-card-header">
+          <div class="gen-dot" style="background:#ff0000"></div>
+          YouTube
+        </div>
+        <div class="gen-text" id="gt3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: WhatsApp Delivery -->
+  <div class="panel" id="panel-3">
+    <div class="panel-title">Step 4 — WhatsApp Delivery</div>
+    <div class="step4-inner">
+
+      <div class="mini-phone" id="miniPhone">
+        <div class="mini-status">
+          <span>8:02</span>
+          <span>▮▮▮ 🔋</span>
+        </div>
+        <div class="mini-wa-header">
+          <div class="mini-avatar">C✦</div>
+          <div>
+            <div class="mini-contact">Clawdraft ✦</div>
+          </div>
+        </div>
+        <div class="mini-chat">
+          <div class="mini-bubble" id="mb1">Good morning Jordan 👋 Your content for this week is ready!</div>
+          <div class="mini-cards" id="mb2">
+            <div class="mini-card">𝕏 X Thread — 5 tweets</div>
+            <div class="mini-card">📧 Newsletter — 357 words</div>
+            <div class="mini-card">💼 LinkedIn — hot take</div>
+            <div class="mini-card">🎬 YouTube hook</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="delivery-info">
+        <div class="delivery-stat" id="ds0">
+          <div class="delivery-icon">📡</div>
+          <div>
+            <div class="delivery-label">Message Sent</div>
+            <div class="delivery-sub">via WhatsApp API</div>
+          </div>
+          <div class="check-mark">✓</div>
+        </div>
+        <div class="delivery-stat" id="ds1">
+          <div class="delivery-icon">📱</div>
+          <div>
+            <div class="delivery-label">4 formats attached</div>
+            <div class="delivery-sub">X, Newsletter, LinkedIn, YouTube</div>
+          </div>
+          <div class="check-mark">✓</div>
+        </div>
+        <div class="delivery-stat" id="ds2">
+          <div class="delivery-icon">⏱</div>
+          <div>
+            <div class="delivery-label">Delivered at 8:02am</div>
+            <div class="delivery-sub">before Jordan starts work</div>
+          </div>
+          <div class="check-mark">✓</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer timer -->
+<div class="wt-footer">
+  <div class="step-timer"><div class="step-timer-fill" id="timerFill"></div></div>
+  <div class="step-counter" id="stepCounter">Step 1 of 4</div>
+</div>
+
+<script>
+(function() {
+  let currentStep = 0;
+  const STEP_DURATION = 4500; // ms per step
+  let stepStart = null;
+  let rafId = null;
+  let stepTimeouts = [];
+
+  function clearTimeouts() {
+    stepTimeouts.forEach(clearTimeout);
+    stepTimeouts = [];
+  }
+
+  function t(fn, delay) {
+    const id = setTimeout(fn, delay);
+    stepTimeouts.push(id);
+  }
+
+  function typeText(el, text, speed, callback) {
+    let i = 0;
+    el.textContent = '';
+    function next() {
+      if (i < text.length) {
+        el.textContent += text[i++];
+        const id = setTimeout(next, speed + Math.random() * 20);
+        stepTimeouts.push(id);
+      } else if (callback) callback();
+    }
+    next();
+  }
+
+  // Step 1 animations
+  function runStep1() {
+    // Show form rows staggered
+    const rows = ['f1','f2','f3','f4'];
+    rows.forEach((id, i) => {
+      t(() => document.getElementById(id).classList.add('appear'), i * 250);
+    });
+
+    // Type name
+    t(() => {
+      const el = document.getElementById('t-name');
+      typeText(el, 'Jordan Blake', 70);
+    }, 300);
+
+    // Type niche
+    t(() => {
+      document.getElementById('c1').style.display = 'none';
+      document.getElementById('c2').style.display = 'inline-block';
+      const el = document.getElementById('t-niche');
+      typeText(el, 'Productivity for solopreneurs', 55);
+    }, 1200);
+
+    // Tone tags
+    t(() => {
+      document.getElementById('c2').style.display = 'none';
+      const tones = ['Contrarian', 'Direct'];
+      const row = document.getElementById('toneRow');
+      tones.forEach((tone, i) => {
+        t(() => {
+          const tag = document.createElement('div');
+          tag.className = 'tag';
+          tag.textContent = tone;
+          row.appendChild(tag);
+        }, i * 300);
+      });
+    }, 2200);
+
+    // Platform tags
+    t(() => {
+      const platforms = ['𝕏 Twitter', 'LinkedIn', 'Newsletter', 'YouTube'];
+      const row = document.getElementById('platformRow');
+      platforms.forEach((p, i) => {
+        t(() => {
+          const tag = document.createElement('div');
+          tag.className = 'tag';
+          tag.textContent = p;
+          row.appendChild(tag);
+        }, i * 200);
+      });
+    }, 2800);
+  }
+
+  // Reset step1
+  function resetStep1() {
+    ['f1','f2','f3','f4'].forEach(id => document.getElementById(id).classList.remove('appear'));
+    document.getElementById('t-name').textContent = '';
+    document.getElementById('t-niche').textContent = '';
+    document.getElementById('toneRow').innerHTML = '';
+    document.getElementById('platformRow').innerHTML = '';
+    document.getElementById('c1').style.display = 'inline-block';
+    document.getElementById('c2').style.display = 'none';
+  }
+
+  // Step 2
+  function runStep2() {
+    ['rc0','rc1','rc2'].forEach((id, i) => {
+      t(() => document.getElementById(id).classList.add('appear'), i * 600 + 200);
+    });
+    t(() => {
+      document.getElementById('rc0').classList.add('selected');
+    }, 2400);
+  }
+
+  function resetStep2() {
+    ['rc0','rc1','rc2'].forEach(id => {
+      const el = document.getElementById(id);
+      el.classList.remove('appear', 'selected');
+    });
+  }
+
+  // Step 3
+  const genTexts = [
+    'I deleted every productivity app on my phone 6 months ago. My output went up 40%...',
+    'Subject: The hidden productivity tax you\'re paying every day. There\'s a tax on your time...',
+    'Hot take: The most productive people I know use the fewest tools. Not the most sophisticated...',
+    'The productivity software industry is a $96 billion business — and it needs you to feel disorganized...'
+  ];
+
+  function runStep3() {
+    ['gc0','gc1','gc2','gc3'].forEach((id, i) => {
+      t(() => {
+        document.getElementById(id).classList.add('appear');
+        typeText(document.getElementById('gt' + i), genTexts[i], 28, () => {
+          document.getElementById(id).classList.add('done');
+        });
+      }, i * 200);
+    });
+  }
+
+  function resetStep3() {
+    ['gc0','gc1','gc2','gc3'].forEach((id, i) => {
+      document.getElementById(id).classList.remove('appear', 'done');
+      document.getElementById('gt' + i).textContent = '';
+    });
+  }
+
+  // Step 4
+  function runStep4() {
+    t(() => document.getElementById('miniPhone').classList.add('appear'), 200);
+    t(() => document.getElementById('mb1').classList.add('appear'), 800);
+    t(() => document.getElementById('mb2').classList.add('appear'), 1400);
+    ['ds0','ds1','ds2'].forEach((id, i) => {
+      t(() => document.getElementById(id).classList.add('appear'), 1600 + i * 400);
+    });
+  }
+
+  function resetStep4() {
+    document.getElementById('miniPhone').classList.remove('appear');
+    document.getElementById('mb1').classList.remove('appear');
+    document.getElementById('mb2').classList.remove('appear');
+    ['ds0','ds1','ds2'].forEach(id => document.getElementById(id).classList.remove('appear'));
+  }
+
+  const stepRunners = [runStep1, runStep2, runStep3, runStep4];
+  const stepResetters = [resetStep1, resetStep2, resetStep3, resetStep4];
+  const labels = ['Brand Voice','Reddit Trends','Content Gen','Delivery'];
+
+  function activateStep(step) {
+    // Update pills
+    for (let i = 0; i < 4; i++) {
+      const pill = document.getElementById('pill-' + i);
+      pill.classList.remove('active', 'done');
+      if (i < step) pill.classList.add('done');
+      if (i === step) pill.classList.add('active');
+    }
+
+    // Update panels
+    for (let i = 0; i < 4; i++) {
+      document.getElementById('panel-' + i).classList.remove('active');
+    }
+    document.getElementById('panel-' + step).classList.add('active');
+
+    // Update counter
+    document.getElementById('stepCounter').textContent = `Step ${step + 1} of 4`;
+
+    // Run step animation
+    stepRunners[step]();
+
+    // Start timer fill animation
+    const fill = document.getElementById('timerFill');
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    requestAnimationFrame(() => {
+      fill.style.transition = `width ${STEP_DURATION}ms linear`;
+      fill.style.width = '100%';
+    });
+  }
+
+  function nextStep() {
+    clearTimeouts();
+    // Reset all
+    stepResetters.forEach(fn => fn());
+
+    currentStep = (currentStep + 1) % 4;
+    activateStep(currentStep);
+  }
+
+  // Make pills clickable
+  let loopInterval = setInterval(nextStep, STEP_DURATION + 500);
+
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('pill-' + i).addEventListener('click', () => {
+      clearInterval(loopInterval);
+      clearTimeouts();
+      stepResetters.forEach(fn => fn());
+      currentStep = i;
+      activateStep(currentStep);
+      loopInterval = setInterval(nextStep, STEP_DURATION + 500);
+    });
+  }
+
+  // Start
+  activateStep(0);
+})();
+</script>
+</body>
+</html>
