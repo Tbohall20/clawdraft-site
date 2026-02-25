@@ -807,11 +807,18 @@
       <!-- Video progress bar -->
       <div class="video-bar">
         <div class="vb-time" id="vbTime">0:00</div>
-        <div class="vb-track">
+        <div class="vb-track" id="vbTrack" style="cursor:pointer">
           <div class="vb-fill" id="vbFill"></div>
           <div class="vb-thumb" id="vbThumb"></div>
         </div>
         <div class="vb-dur">1:10</div>
+      </div>
+
+      <!-- Chapter nav buttons -->
+      <div id="chapterNav" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 16px 10px;background:#0a0a0a;">
+        <button onclick="prevChapter()" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;">◀ Prev</button>
+        <span id="chapterLabel" style="font-size:11px;color:#666;flex:1;text-align:center;letter-spacing:0.5px;text-transform:uppercase;">Dashboard</span>
+        <button onclick="nextChapter()" style="background:#1a1a1a;border:1px solid #333;color:#aaa;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Next ▶</button>
       </div>
 
     </div>
@@ -1025,6 +1032,61 @@
 
     rafId = requestAnimationFrame(tick);
   }
+
+  // Chapter names
+  var chapterNames = ['Dashboard','Reddit Trends','Content Generation','WhatsApp Delivery','Run Complete'];
+
+  // Jump to a specific phase
+  function jumpToPhase(idx) {
+    cancelAnimationFrame(rafId);
+    clearAll();
+    resetAll();
+    currentPhase = -1;
+    startTime = performance.now() - phases[idx].start;
+    document.getElementById('chapterLabel').textContent = chapterNames[idx] || '';
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // Prev/Next buttons
+  window.prevChapter = function() {
+    var p = Math.max(0, currentPhase - 1);
+    jumpToPhase(p);
+  };
+  window.nextChapter = function() {
+    var p = Math.min(phases.length - 1, currentPhase + 1);
+    jumpToPhase(p);
+  };
+
+  // Clickable progress bar — seek to position
+  document.getElementById('vbTrack').addEventListener('click', function(e) {
+    var rect = this.getBoundingClientRect();
+    var pct = (e.clientX - rect.left) / rect.width;
+    var targetMs = Math.floor(pct * TOTAL_MS);
+    // Find which phase that maps to
+    var idx = 0;
+    for (var i = phases.length - 1; i >= 0; i--) {
+      if (targetMs >= phases[i].start) { idx = i; break; }
+    }
+    jumpToPhase(idx);
+  });
+
+  // Clickable nav items
+  document.querySelectorAll('.nav-item').forEach(function(el, i) {
+    if (i < phases.length) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function() { jumpToPhase(i); });
+    }
+  });
+
+  // Update chapter label on phase change
+  var _origTick = tick;
+  // Patch switchPanel to also update chapter label
+  var _origSwitchPanel = switchPanel;
+  switchPanel = function(idx) {
+    _origSwitchPanel(idx);
+    var label = document.getElementById('chapterLabel');
+    if (label) label.textContent = chapterNames[idx] || '';
+  };
 
   // Start
   requestAnimationFrame(tick);

@@ -628,6 +628,16 @@
 
     </div>
 
+    <!-- Content Drawer — slides up over screen when a card is tapped -->
+    <div class="content-drawer" id="contentDrawer">
+      <div class="drawer-handle"></div>
+      <div class="drawer-header">
+        <div class="drawer-label" id="drawerLabel">X Thread</div>
+        <button class="drawer-close" onclick="closeDrawer()">✕</button>
+      </div>
+      <div class="drawer-body" id="drawerBody"></div>
+    </div>
+
     <!-- Home indicator outside screen bezel -->
     <div class="home-indicator">
       <div class="home-bar"></div>
@@ -636,6 +646,72 @@
 </div>
 
 <style>
+  /* Content Drawer */
+  .content-drawer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a1a;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 16px 32px;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 10;
+    max-height: 75%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .content-drawer.open { transform: translateY(0); }
+  .drawer-handle {
+    width: 36px; height: 4px;
+    background: #444;
+    border-radius: 2px;
+    margin: 0 auto 14px;
+  }
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .drawer-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e9edef;
+  }
+  .drawer-close {
+    background: #2a3942;
+    border: none;
+    color: #8696a0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .drawer-body {
+    font-size: 13.5px;
+    color: #d1d7db;
+    line-height: 1.65;
+    white-space: pre-line;
+  }
+  .drawer-tweet {
+    padding: 10px 0;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .drawer-tweet:last-child { border-bottom: none; }
+  .tweet-num {
+    font-size: 11px;
+    color: #8696a0;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
   /* Animate bubbles via CSS delays after phone loads */
   #typing {
     animation: showTyping 0.3s 1s forwards, hideTyping 0.3s 2.4s forwards;
@@ -654,8 +730,57 @@
   #msg2 { animation: bubbleIn 0.45s cubic-bezier(0.22,1,0.36,1) 3.3s forwards; }
 </style>
 <script>
+  // Jordan Blake demo content
+  var CONTENT = {
+    twitter: {
+      label: '𝕏 X Thread — Jordan Blake',
+      html: `
+        <div class="drawer-tweet"><div class="tweet-num">Tweet 1/5</div>I deleted every productivity app last month.\n\nHere's what actually happened to my output (not what you'd expect) 🧵</div>
+        <div class="drawer-tweet"><div class="tweet-num">Tweet 2/5</div>Everyone's selling you a system.\n\nNotion. ClickUp. Linear. I had all three running simultaneously and spent more time maintaining them than doing actual work.</div>
+        <div class="drawer-tweet"><div class="tweet-num">Tweet 3/5</div>Plain text files. One folder. No integrations.\n\nMy output went up 40% in 3 weeks.</div>
+        <div class="drawer-tweet"><div class="tweet-num">Tweet 4/5</div>The tool was never the problem.\n\nThe switching cost was. Every app you add is a new place your brain has to check.</div>
+        <div class="drawer-tweet"><div class="tweet-num">Tweet 5/5</div>If your system requires a tutorial, it's already failed you.</div>
+      `
+    },
+    newsletter: {
+      label: '📧 Newsletter Intro',
+      html: `<div style="padding:4px 0">This week I want to talk about the quiet productivity tax you're paying every single day — and it's not your calendar, your sleep, or your discipline.\n\nIt's your tools.\n\nSpecifically, the ones you added to solve a problem and never questioned again.\n\nWe tell ourselves each new app is a solution. Notion for notes. ClickUp for tasks. Linear for projects. But every tool is also a new place your brain has to check, a new interface to maintain, a new thing to configure when you'd rather be shipping.\n\nThis week's Reddit thread — "Why I stopped using Notion and went back to plain text" — hit 4.1K upvotes. The comments were full of people nodding along.\n\nHere's what I think is actually going on.</div>`
+    },
+    linkedin: {
+      label: '💼 LinkedIn Post',
+      html: `<div style="padding:4px 0">Hot take: the most productive people I know use the fewest tools.\n\nNot because they're contrarian.\n\nBecause they've done the math on switching costs.\n\nEvery app is a subscription — not just financially, but cognitively. Every interface you maintain is attention you're not spending on the work itself.\n\nI've been watching a thread blow up this week — 4K upvotes — about abandoning Notion for plain text. The comments are full of founders and solo operators saying the same thing: "I feel lighter. I ship more."\n\nThe productivity software industry is worth $96B. It needs you to feel disorganized.\n\nWorth auditing yours this week.\n\nWhat's the one tool you'd delete tomorrow if you were honest with yourself?</div>`
+    },
+    youtube: {
+      label: '🎬 YouTube Hook',
+      html: `<div style="padding:4px 0"><strong style="color:#aaa;font-size:12px">OPENING 15 SECONDS</strong>\n\n"What if I told you the productivity industry has a vested interest in making you feel disorganized?\n\nIf you ever felt truly on top of your work, you'd stop buying their apps, their courses, their system upgrades.\n\nI want to show you something that 4,100 people discovered this week — and it's going to make you rethink everything you've installed in the last 12 months."</div>`
+    }
+  };
+
+  function openDrawer(type) {
+    var data = CONTENT[type];
+    if (!data) return;
+    document.getElementById('drawerLabel').textContent = data.label;
+    document.getElementById('drawerBody').innerHTML = data.html;
+    document.getElementById('contentDrawer').classList.add('open');
+    reportHeight();
+  }
+
+  function closeDrawer() {
+    document.getElementById('contentDrawer').classList.remove('open');
+    setTimeout(reportHeight, 400);
+  }
+
+  // Wire up cards
+  window.addEventListener('load', function() {
+    var cards = document.querySelectorAll('.content-card');
+    var types = ['twitter','newsletter','linkedin','youtube'];
+    cards.forEach(function(card, i) {
+      card.addEventListener('click', function() { openDrawer(types[i]); });
+    });
+  });
+
   function reportHeight() {
-    const h = document.documentElement.scrollHeight || document.body.scrollHeight;
+    var h = document.documentElement.scrollHeight || document.body.scrollHeight;
     window.parent.postMessage({ iframeHeight: h }, '*');
   }
   window.addEventListener('load', function() {
