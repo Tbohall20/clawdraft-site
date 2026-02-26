@@ -1595,5 +1595,66 @@
     });
   </script>
 
+
+<!-- Support Button -->
+<a href="mailto:hello@clawdraft.app?subject=Support%20Request&body=Hi%2C%20I%20have%20a%20question%20about%20Clawdraft..." 
+   id="support-btn"
+   title="Contact Support"
+   style="
+     position: fixed;
+     bottom: 24px;
+     right: 24px;
+     width: 52px;
+     height: 52px;
+     border-radius: 50%;
+     background: #6c47ff;
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-decoration: none;
+     box-shadow: 0 4px 20px rgba(108,71,255,0.4);
+     z-index: 9999;
+     transition: transform 0.2s, box-shadow 0.2s;
+     font-size: 22px;
+     line-height: 1;
+   "
+   onmouseover="this.style.transform='scale(1.1)';this.style.boxShadow='0 6px 28px rgba(108,71,255,0.55)'"
+   onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 4px 20px rgba(108,71,255,0.4)'"
+>
+  💬
+</a>
+<div style="
+  position: fixed;
+  bottom: 84px;
+  right: 24px;
+  background: #1a1a2e;
+  color: #e5e7eb;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 9998;
+  border: 1px solid #2a2a4a;
+" id="support-tooltip">Questions? Email us →</div>
+
+<script>
+  const btn = document.getElementById('support-btn');
+  const tip = document.getElementById('support-tooltip');
+  btn.addEventListener('mouseenter', () => tip.style.opacity = '1');
+  btn.addEventListener('mouseleave', () => tip.style.opacity = '0');
+  // Show tooltip briefly on mobile tap
+  btn.addEventListener('touchstart', () => {
+    tip.style.opacity = '1';
+    setTimeout(() => tip.style.opacity = '0', 2000);
+  });
+</script>
+
 </body>
 </html>
