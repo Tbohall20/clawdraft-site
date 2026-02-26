@@ -1036,6 +1036,33 @@
       grid-template-columns: 1fr !important;
     }
   }
+
+  /* ─── Mobile Demo Fixes ──────────────────────────────── */
+  @media (max-width: 640px) {
+    /* Hide desktop-oriented demos on mobile */
+    .demo-desktop-only {
+      display: none !important;
+    }
+
+    /* Reduce heights for mobile-friendly demos */
+    #iframePhone {
+      height: 700px !important;
+    }
+    #demoWidget {
+      height: 680px !important;
+    }
+
+    /* Allow scrolling inside iframes on mobile */
+    #demo iframe {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Fix wrapper overflow */
+    #demo > .container > div {
+      overflow: hidden;
+    }
+  }
   </style>
 </head>
 
@@ -1179,7 +1206,7 @@
         <div class="phone-messages">
           <div class="message-bubble">
             <div class="bubble-tag">📦 Weekly content drop</div>
-            Week of Feb 24. Topics: AI fatigue, creator burnout, making content that doesn't feel like content. 4 pieces attached below.
+            This week's drop. Topics: AI fatigue, creator burnout, making content that doesn't feel like content. 4 pieces ready to post.
             <div class="message-time">Sun 8:00 PM ✓✓</div>
           </div>
           <div class="message-bubble">
@@ -1249,15 +1276,15 @@
     <div class="container">
       <div class="section-label">See it live</div>
       <h2 class="section-title">Watch the full pipeline run.</h2>
-      <p class="section-sub">From Reddit trend to WhatsApp delivery. No cuts, no dead time. This is what happens every Monday at 6am.</p>
+      <p class="section-sub">From trending topic to WhatsApp delivery. No cuts, no dead time. This is what happens every week at 6am.</p>
 
-      <!-- Screen recording sim — full width -->
-      <div style="border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;margin-bottom:48px;">
+      <!-- Screen recording sim — full width, desktop only -->
+      <div class="demo-desktop-only" style="border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;margin-bottom:48px;">
         <iframe id="iframeRecording" src="screen-recording-sim.html" width="100%" height="660" scrolling="no" style="display:block;border:none;"></iframe>
       </div>
 
-      <!-- Walkthrough — full width -->
-      <div style="margin-bottom:48px;">
+      <!-- Walkthrough — full width, desktop only -->
+      <div class="demo-desktop-only" style="margin-bottom:48px;">
         <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:12px;">How it works — step by step</p>
         <div style="border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;">
           <iframe id="iframeWalkthrough" src="walkthrough.html" width="100%" height="700" scrolling="no" style="display:block;border:none;"></iframe>
@@ -1274,7 +1301,7 @@
 
       <!-- Interactive widget — centered -->
       <div style="max-width:660px;margin:0 auto;">
-        <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:12px;text-align:center;">Try it — see your personalised preview</p>
+        <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:12px;text-align:center;">Try it — see your personalized preview</p>
         <div style="border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;">
           <iframe src="demo-widget.html" width="100%" height="900" scrolling="auto" style="display:block;border:none;" id="demoWidget"></iframe>
         </div>
@@ -1537,7 +1564,7 @@
           </button>
           <div class="faq-a">
             <div class="faq-a-inner">
-              Yes. Clawdraft can be configured to run 2–3 times per week instead of just Sundays. Done-For-You customers set their preferred schedule during onboarding. DIY customers get instructions in the setup guide.
+              Yes. Clawdraft can be configured to run 2–3 times per week instead of just Sundays. The Frequency Upgrade ($99) handles the reconfiguration — or DIY customers can follow the instructions in their setup guide. Works with either plan.
             </div>
           </div>
         </div>
