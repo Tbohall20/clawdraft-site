@@ -1037,41 +1037,172 @@
     }
   }
 
-  /* ─── Mobile Demo Fixes ──────────────────────────────── */
+  /* ─── Mobile Demo — hide iframes, show native component ── */
+  .demo-mobile-only { display: none; }
+
   @media (max-width: 640px) {
-    /* All demo wrappers: allow horizontal scroll if needed */
-    #demo .demo-desktop-only,
-    #demo > .container > div {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* Screen recording sim — shorter on mobile, scrollable */
-    #iframeRecording {
-      height: 380px !important;
-    }
-
-    /* Walkthrough — shorter on mobile */
-    #iframeWalkthrough {
-      height: 420px !important;
-    }
-
-    /* Phone mockup — reduce slightly */
-    #iframePhone {
-      height: 680px !important;
-    }
-
-    /* Demo widget — reduce on mobile */
-    #demoWidget {
-      height: 600px !important;
-    }
-
-    /* Enable scrolling within all iframes on mobile */
-    #demo iframe {
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+    .demo-desktop-only { display: none !important; }
+    #demo-iframes      { display: none !important; }
+    .demo-mobile-only  { display: block; }
   }
+
+  /* ── Inline phone mockup styles ─────────────────────── */
+  .mobile-demo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 4px;
+  }
+
+  .mobile-phone {
+    width: 100%;
+    max-width: 340px;
+    background: #111;
+    border-radius: 28px;
+    border: 2px solid #2a2a2a;
+    overflow: hidden;
+    box-shadow: 0 32px 64px rgba(0,0,0,0.6), 0 0 0 1px #333;
+    animation: phoneIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes phoneIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .mp-header {
+    background: #1a1a1a;
+    padding: 14px 16px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #222;
+  }
+  .mp-avatar {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #7c6af7, #a78bfa);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .mp-name { font-size: 14px; font-weight: 600; color: #fff; }
+  .mp-status { font-size: 11px; color: #34d399; }
+  .mp-icons { margin-left: auto; display: flex; gap: 14px; font-size: 16px; color: #666; }
+
+  .mp-chat {
+    background: #0e0e0e;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mp-date {
+    text-align: center;
+    font-size: 11px; color: #444;
+    background: #1a1a1a;
+    border-radius: 100px;
+    padding: 3px 10px;
+    width: fit-content;
+    margin: 0 auto;
+  }
+
+  .mp-bubble {
+    background: #1f2c34;
+    border-radius: 8px 8px 8px 2px;
+    padding: 10px 12px;
+    max-width: 88%;
+    animation: bubbleIn 0.4s ease both;
+  }
+  .mp-bubble:nth-child(3) { animation-delay: 0.3s; }
+  .mp-bubble:nth-child(4) { animation-delay: 0.6s; }
+
+  @keyframes bubbleIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .mp-bubble-text { font-size: 13px; color: #e9edef; line-height: 1.5; }
+  .mp-bubble-time { font-size: 10px; color: #8696a0; text-align: right; margin-top: 4px; }
+
+  .mp-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .mp-card {
+    background: #2a3942;
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mp-card-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; flex-shrink: 0;
+  }
+  .ic-x  { background: #000; }
+  .ic-nl { background: #0a2540; }
+  .ic-li { background: #0a66c2; }
+  .ic-yt { background: #ff0000; }
+  .mp-card-label { font-size: 12px; font-weight: 600; color: #e9edef; }
+  .mp-card-sub   { font-size: 11px; color: #8696a0; }
+  .mp-card-arrow { margin-left: auto; color: #8696a0; font-size: 16px; }
+
+  .mp-input {
+    background: #1a1a1a;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid #222;
+  }
+  .mp-input-box {
+    flex: 1; background: #2a2a2a; border-radius: 20px;
+    padding: 8px 14px; font-size: 13px; color: #666;
+  }
+
+  .mobile-demo-caption {
+    text-align: center;
+    font-size: 13px;
+    color: #5a5a6a;
+    line-height: 1.5;
+    max-width: 300px;
+  }
+
+  .mobile-demo-steps {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mds-step {
+    background: #111113;
+    border: 1px solid #1e1e22;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .mds-num {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: rgba(124,106,247,0.15);
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: #a78bfa;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .mds-text { font-size: 13px; color: #9898a8; line-height: 1.5; }
+  .mds-text strong { color: #f0f0f2; }
   </style>
 </head>
 
@@ -1287,6 +1418,82 @@
       <h2 class="section-title">Watch the full pipeline run.</h2>
       <p class="section-sub">From trending topic to WhatsApp delivery. No cuts, no dead time. This is what happens every week at 6am.</p>
 
+      <!-- ── MOBILE-ONLY: native inline demo ── -->
+      <div class="demo-mobile-only">
+        <div class="mobile-demo-wrap">
+
+          <!-- Inline phone mockup -->
+          <div class="mobile-phone">
+            <div class="mp-header">
+              <div class="mp-avatar">C✦</div>
+              <div>
+                <div class="mp-name">Clawdraft ✦</div>
+                <div class="mp-status">● online</div>
+              </div>
+              <div class="mp-icons">📞 ⋮</div>
+            </div>
+            <div class="mp-chat">
+              <div class="mp-date">Sunday 8:02 PM</div>
+              <div class="mp-bubble">
+                <div class="mp-bubble-text">Good morning Jordan 👋 Your content for this week is ready. Reddit picked up a big one — plain text productivity is going viral. Here's your full set:</div>
+                <div class="mp-bubble-time">8:02 pm ✓✓</div>
+              </div>
+              <div class="mp-bubble" style="max-width:96%">
+                <div class="mp-cards">
+                  <div class="mp-card">
+                    <div class="mp-card-icon ic-x">𝕏</div>
+                    <div><div class="mp-card-label">X Thread</div><div class="mp-card-sub">5 tweets · ready to post</div></div>
+                    <div class="mp-card-arrow">›</div>
+                  </div>
+                  <div class="mp-card">
+                    <div class="mp-card-icon ic-nl">📧</div>
+                    <div><div class="mp-card-label">Newsletter</div><div class="mp-card-sub">Full issue · 520 words</div></div>
+                    <div class="mp-card-arrow">›</div>
+                  </div>
+                  <div class="mp-card">
+                    <div class="mp-card-icon ic-li">💼</div>
+                    <div><div class="mp-card-label">LinkedIn Post</div><div class="mp-card-sub">Data-backed · high engagement</div></div>
+                    <div class="mp-card-arrow">›</div>
+                  </div>
+                  <div class="mp-card">
+                    <div class="mp-card-icon ic-yt">🎬</div>
+                    <div><div class="mp-card-label">YouTube Script</div><div class="mp-card-sub">Full script · ~5 min</div></div>
+                    <div class="mp-card-arrow">›</div>
+                  </div>
+                </div>
+                <div class="mp-bubble-time" style="margin-top:8px">8:02 pm ✓✓</div>
+              </div>
+            </div>
+            <div class="mp-input">
+              <div class="mp-input-box">Message</div>
+              <span style="font-size:20px">🎤</span>
+            </div>
+          </div>
+
+          <p class="mobile-demo-caption">This is what lands in your WhatsApp every Sunday at 8pm. Four formats. One drop. Zero effort.</p>
+
+          <!-- How it works — mobile step list -->
+          <div class="mobile-demo-steps">
+            <div class="mds-step">
+              <div class="mds-num">01</div>
+              <div class="mds-text"><strong>6am Mon–Sat</strong> — agent scrapes trending topics in your niche</div>
+            </div>
+            <div class="mds-step">
+              <div class="mds-num">02</div>
+              <div class="mds-text"><strong>Sunday 8pm</strong> — your full content batch is written and delivered to WhatsApp</div>
+            </div>
+            <div class="mds-step">
+              <div class="mds-num">03</div>
+              <div class="mds-text"><strong>You review, edit if you want, and post.</strong> That's your entire content workflow.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── DESKTOP: full iframe demos ── -->
+      <div id="demo-iframes">
+
       <!-- Screen recording sim — full width, desktop only -->
       <div class="demo-desktop-only" style="border:1px solid #1e1e1e;border-radius:12px;overflow:hidden;margin-bottom:48px;">
         <iframe id="iframeRecording" src="screen-recording-sim.html" width="100%" height="660" scrolling="auto" style="display:block;border:none;"></iframe>
@@ -1315,6 +1522,8 @@
           <iframe src="demo-widget.html" width="100%" height="900" scrolling="auto" style="display:block;border:none;" id="demoWidget"></iframe>
         </div>
       </div>
+
+      </div><!-- /demo-iframes -->
     </div>
   </section>
 
