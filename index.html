@@ -1061,37 +1061,24 @@
 
   .mobile-phone {
     width: 100%;
-    max-width: 320px;
-    background: #1a1f27;
-    border-radius: 24px;
-    border: 2px solid rgba(124,106,247,0.7);
+    background: #0f1923;
+    border-radius: 16px;
+    border: 1px solid rgba(124,106,247,0.4);
     overflow: hidden;
     box-shadow:
-      0 0 0 6px rgba(0,0,0,0.5),
-      0 32px 64px rgba(0,0,0,0.8),
-      0 0 80px rgba(124,106,247,0.3),
-      0 0 120px rgba(124,106,247,0.1);
-    opacity: 0;
-    transform: translateY(32px) scale(0.95);
-    transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
-  }
-  .mobile-phone.in-view {
+      0 0 40px rgba(124,106,247,0.18),
+      0 20px 60px rgba(0,0,0,0.6);
     opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  @keyframes phoneIn {
-    from { opacity: 0; transform: translateY(32px) scale(0.95); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    transform: none;
   }
 
   .mp-header {
-    background: #111827;
+    background: #131e2e;
     padding: 14px 16px 12px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
   .mp-avatar {
     width: 36px; height: 36px;
@@ -1108,11 +1095,11 @@
 
   .mp-chat {
     background: #0b1520;
-    padding: 16px 12px;
+    padding: 16px 14px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    min-height: 280px;
+    gap: 14px;
+    min-height: 200px;
   }
 
   .mp-date {
@@ -1127,26 +1114,15 @@
   }
 
   .mp-bubble {
-    background: #1d3a50;
+    background: #162c40;
     border-radius: 10px 10px 10px 2px;
-    padding: 10px 12px;
-    max-width: 90%;
-    border: 1px solid rgba(255,255,255,0.1);
-    opacity: 0;
-    transform: translateX(-12px);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
-  }
-  .mobile-phone.in-view .mp-bubble:nth-child(2) {
-    opacity: 1; transform: translateX(0);
-    transition-delay: 0.5s;
-  }
-  .mobile-phone.in-view .mp-bubble:nth-child(3) {
-    opacity: 1; transform: translateX(0);
-    transition-delay: 1.0s;
+    padding: 12px 14px;
+    max-width: 96%;
+    border: 1px solid rgba(255,255,255,0.12);
   }
 
-  .mp-bubble-text { font-size: 13px; color: #e2e8f0; line-height: 1.55; }
-  .mp-bubble-time { font-size: 10px; color: #64748b; text-align: right; margin-top: 6px; }
+  .mp-bubble-text { font-size: 14px; color: #e8edf5; line-height: 1.6; }
+  .mp-bubble-time { font-size: 11px; color: #64748b; text-align: right; margin-top: 6px; }
 
   .mp-cards { display: flex; flex-direction: column; gap: 7px; margin-top: 6px; }
 
@@ -1175,8 +1151,8 @@
   .ic-nl { background: #0a2540; }
   .ic-li { background: #0a66c2; }
   .ic-yt { background: #c00; }
-  .mp-card-label { font-size: 12px; font-weight: 600; color: #e2e8f0; }
-  .mp-card-sub   { font-size: 11px; color: #64748b; }
+  .mp-card-label { font-size: 14px; font-weight: 600; color: #e8edf5; }
+  .mp-card-sub   { font-size: 12px; color: #64748b; margin-top: 2px; }
   .mp-card-chevron {
     margin-left: auto; color: #4a5568; font-size: 14px;
     transition: transform 0.2s;
@@ -1185,31 +1161,19 @@
 
   .mp-card-content {
     display: none;
-    padding: 10px 12px 4px;
-    font-size: 12px;
+    padding: 12px 0 4px;
+    font-size: 13px;
     color: #94a3b8;
-    line-height: 1.6;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    margin-top: 8px;
+    line-height: 1.65;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 10px;
     white-space: pre-line;
   }
   .mp-card.open .mp-card-content { display: block; }
   .mp-card-inner { flex: 1; min-width: 0; }
 
-  .mp-input {
-    background: #111827;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-  .mp-input-box {
-    flex: 1; background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 8px 14px; font-size: 13px; color: #4a5568;
-  }
+  .mp-input { display: none; }
+  .mp-input-box { display: none; }
 
   .mobile-demo-caption {
     text-align: center; font-size: 13px;
