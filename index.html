@@ -1053,9 +1053,9 @@
     align-items: center;
     gap: 24px;
     padding: 32px 16px;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,106,247,0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse 100% 80% at 50% 10%, rgba(124,106,247,0.12) 0%, transparent 70%);
     border-radius: 20px;
-    border: 1px solid rgba(124,106,247,0.12);
+    border: 1px solid rgba(124,106,247,0.2);
   }
 
   .mobile-phone {
@@ -1063,12 +1063,13 @@
     max-width: 320px;
     background: #1a1f27;
     border-radius: 24px;
-    border: 1.5px solid rgba(124,106,247,0.35);
+    border: 2px solid rgba(124,106,247,0.7);
     overflow: hidden;
     box-shadow:
-      0 0 0 4px rgba(0,0,0,0.4),
-      0 24px 48px rgba(0,0,0,0.7),
-      0 0 60px rgba(124,106,247,0.12);
+      0 0 0 6px rgba(0,0,0,0.5),
+      0 32px 64px rgba(0,0,0,0.8),
+      0 0 80px rgba(124,106,247,0.3),
+      0 0 120px rgba(124,106,247,0.1);
     animation: phoneIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both;
   }
 
@@ -1099,7 +1100,7 @@
   .mp-icons { margin-left: auto; display: flex; gap: 14px; font-size: 16px; color: #4a5568; }
 
   .mp-chat {
-    background: #0d1117;
+    background: #0b1520;
     padding: 16px 12px;
     display: flex;
     flex-direction: column;
@@ -1119,11 +1120,11 @@
   }
 
   .mp-bubble {
-    background: #1e3a4a;
+    background: #1d3a50;
     border-radius: 10px 10px 10px 2px;
     padding: 10px 12px;
     max-width: 90%;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
     opacity: 0;
     animation: bubbleIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
   }
