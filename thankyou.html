@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clawdraft — You're In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0b; --bg-2: #111113; --bg-3: #18181c;
+      --border: #222228; --border-2: #2e2e38;
+      --text: #f0f0f2; --text-2: #9898a8; --text-3: #5a5a6a;
+      --accent: #7c6af7; --accent-glow: rgba(124,106,247,0.18); --accent-2: #a78bfa;
+      --green: #34d399; --green-bg: rgba(52,211,153,0.08);
+      --gold: #f59e0b; --gold-bg: rgba(245,158,11,0.08);
+      --radius: 12px; --radius-lg: 20px;
+      --font: 'Inter', sans-serif; --mono: 'JetBrains Mono', monospace;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--font); font-size: 16px; line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 48px 24px;
+    }
+    .container { max-width: 600px; width: 100%; }
+
+    .logo {
+      font-family: var(--mono); font-size: 16px; color: var(--accent-2);
+      text-align: center; margin-bottom: 48px;
+    }
+
+    .hero { text-align: center; margin-bottom: 48px; }
+
+    .icon { font-size: 64px; margin-bottom: 24px; }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 40px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle { font-size: 17px; color: var(--text-2); line-height: 1.6; }
+
+    /* Steps */
+    .steps-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 36px; margin-bottom: 24px;
+    }
+    .steps-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent-2); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .steps-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .step { display: flex; gap: 16px; padding: 16px 0; }
+    .step + .step { border-top: 1px solid var(--border); }
+
+    .step-num {
+      flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accent-glow); border: 1px solid rgba(124,106,247,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 12px; color: var(--accent-2); font-weight: 500;
+    }
+    .step h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .step p { font-size: 14px; color: var(--text-2); line-height: 1.5; }
+    .step a { color: var(--accent-2); text-decoration: none; border-bottom: 1px solid rgba(167,139,250,0.3); }
+    .step a:hover { border-color: var(--accent-2); }
+
+    /* CTA */
+    .cta-block { text-align: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--accent) 0%, #9d8ffa 100%);
+      color: #fff; font-family: var(--font); font-size: 16px; font-weight: 700;
+      padding: 16px 40px; border-radius: var(--radius); text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s; letter-spacing: -0.01em;
+      margin-bottom: 12px; display: inline-flex;
+    }
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .support { font-size: 13px; color: var(--text-3); margin-top: 16px; }
+    .support a { color: var(--accent-2); text-decoration: none; }
+
+    /* Check email banner */
+    .email-banner {
+      background: var(--green-bg); border: 1px solid rgba(52,211,153,0.25);
+      border-radius: var(--radius); padding: 16px 20px;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 24px; font-size: 14px; color: var(--green);
+    }
+    .email-banner-icon { font-size: 20px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="logo">clawdraft_</div>
+
+  <!-- DFY flow: shown when ?plan=dfy -->
+  <div id="view-dfy" style="display:none;">
+    <div class="hero">
+      <div class="icon">⚡</div>
+      <h1>You're in.<br><span>Let's build your system.</span></h1>
+      <p class="subtitle">Purchase confirmed. Fill out your 5-minute intake form and we'll have your personalized Clawdraft system ready within minutes.</p>
+    </div>
+    <div class="email-banner">
+      <span class="email-banner-icon">📧</span>
+      <span>Check your email — your receipt and a link to this page are on the way.</span>
+    </div>
+    <div class="cta-block">
+      <a href="/onboard.html" class="btn">⚡ Fill Out My Intake Form</a>
+      <p class="support">Questions? <a href="mailto:hello@clawdraft.app">hello@clawdraft.app</a></p>
+    </div>
+  </div>
+
+  <!-- DIY flow: shown when ?plan=diy or default -->
+  <div id="view-diy">
+    <div class="hero">
+      <div class="icon">🎉</div>
+      <h1>You're in.<br><span>Setup takes 15 minutes.</span></h1>
+      <p class="subtitle">Your setup files are on their way to your email. Here's what to do next.</p>
+    </div>
+    <div class="email-banner">
+      <span class="email-banner-icon">📧</span>
+      <span>Check your email — your setup files (Setup Guide + Agent Config Template) are attached.</span>
+    </div>
+    <div class="steps-card">
+      <div class="steps-label">Your next 15 minutes</div>
+      <div class="step">
+        <div class="step-num">01</div>
+        <div>
+          <h3>Open your email</h3>
+          <p>Find the Clawdraft receipt. Your setup files are attached — download them to your desktop.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div>
+          <h3>Open Setup Guide</h3>
+          <p>Open <strong>SETUP_GUIDE.md</strong> and follow the steps from the top. Takes about 15 minutes.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div>
+          <h3>Fill in your Agent Config</h3>
+          <p>Open <strong>AGENT_CONFIG_TEMPLATE.md</strong>, fill in your niche and voice. Takes 5 minutes. This is what makes your content sound like you.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div>
+          <h3>Run your first test</h3>
+          <p>Follow the test instructions in the guide. A sample content drop will hit your WhatsApp within 60 seconds. If it arrives — you're live. ⚡</p>
+        </div>
+      </div>
+    </div>
+    <div class="cta-block">
+      <p class="support">Stuck? Email us at <a href="mailto:hello@clawdraft.app">hello@clawdraft.app</a> — we respond within 24 hours.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Show correct view based on ?plan= param
+  var plan = new URLSearchParams(window.location.search).get('plan');
+  if (plan === 'dfy') {
+    document.getElementById('view-dfy').style.display = 'block';
+    document.getElementById('view-diy').style.display = 'none';
+  }
+  // default = diy view already visible
+</script>
+</body>
+</html>
