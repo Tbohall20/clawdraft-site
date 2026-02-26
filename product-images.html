@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0b;
+      --bg-2: #111113;
+      --bg-3: #18181c;
+      --border: #222228;
+      --border-2: #2e2e38;
+      --text: #f0f0f2;
+      --text-2: #9898a8;
+      --text-3: #5a5a6a;
+      --accent: #7c6af7;
+      --accent-2: #a78bfa;
+      --green: #34d399;
+      --gold: #f59e0b;
+    }
+
+    body {
+      background: #1a1a1a;
+      font-family: 'Inter', sans-serif;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .label {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+
+    /* ─── Card base: 800 × 450 ─── */
+    .card {
+      width: 800px;
+      height: 450px;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 48px;
+    }
+
+    /* noise texture overlay */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .card-content { position: relative; z-index: 2; }
+
+    /* ── Glow orb ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    /* ─── DIY Card ─── */
+    .card-diy {
+      background: var(--bg);
+      border: 1px solid var(--border-2);
+    }
+    .card-diy .orb {
+      width: 400px; height: 400px;
+      background: rgba(124, 106, 247, 0.22);
+      top: -150px; right: -100px;
+    }
+
+    /* ─── DFY Card ─── */
+    .card-dfy {
+      background: #09090d;
+      border: 1px solid rgba(124, 106, 247, 0.3);
+    }
+    .card-dfy .orb {
+      width: 500px; height: 500px;
+      background: rgba(124, 106, 247, 0.3);
+      top: -200px; right: -120px;
+    }
+    .card-dfy .orb2 {
+      width: 300px; height: 300px;
+      background: rgba(167, 139, 250, 0.12);
+      bottom: -100px; left: -80px;
+    }
+
+    /* ─── Upgrade Card ─── */
+    .card-upgrade {
+      background: #09090b;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .card-upgrade .orb {
+      width: 400px; height: 400px;
+      background: rgba(245, 158, 11, 0.18);
+      top: -150px; right: -80px;
+    }
+
+    /* ── Typography ── */
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .card-diy .mono { color: #5a5a6a; }
+    .card-dfy .mono { color: var(--accent-2); opacity: 0.7; }
+    .card-upgrade .mono { color: rgba(245, 158, 11, 0.6); }
+
+    .card-title {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .card-title .grad-purple {
+      background: linear-gradient(135deg, #7c6af7 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-title .grad-gold {
+      background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-sub {
+      font-size: 17px;
+      color: var(--text-2);
+      line-height: 1.5;
+      max-width: 460px;
+      margin-bottom: 28px;
+    }
+
+    /* ── Tags ── */
+    .tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .tag-purple {
+      background: rgba(124, 106, 247, 0.15);
+      border: 1px solid rgba(124, 106, 247, 0.35);
+      color: var(--accent-2);
+    }
+
+    .tag-green {
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--green);
+    }
+
+    .tag-gold {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--gold);
+    }
+
+    /* ── Price badge ── */
+    .price-badge {
+      position: absolute;
+      top: 40px;
+      right: 48px;
+      z-index: 2;
+      text-align: right;
+    }
+
+    .price-amount {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .price-purple { color: var(--accent-2); }
+    .price-gold { color: var(--gold); }
+
+    .price-label {
+      font-size: 13px;
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+
+    .price-old {
+      font-size: 15px;
+      color: var(--text-3);
+      text-decoration: line-through;
+      margin-bottom: 2px;
+    }
+
+    /* ── Logo top-left ── */
+    .logo-mark {
+      position: absolute;
+      top: 40px;
+      left: 48px;
+      z-index: 2;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--text-3);
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── 1. DIY Card ── -->
+  <div>
+    <div class="label">PRODUCT 1 — DIY ($297) — screenshot at 800×450</div>
+    <div class="card card-diy">
+      <div class="orb"></div>
+      <div class="logo-mark">clawdraft_</div>
+      <div class="price-badge">
+        <div class="price-amount price-purple">$297</div>
+        <div class="price-label">one-time</div>
+      </div>
+      <div class="card-content">
+        <div class="mono">// diy_setup</div>
+        <div class="card-title">Set it up.<br><span class="grad-purple">Own it.</span></div>
+        <div class="card-sub">Get the complete Clawdraft system. Configure it yourself in ~15 minutes. Full AI content engine, running every Sunday at 8pm.</div>
+        <div class="tags">
+          <span class="tag tag-purple">Full system access</span>
+          <span class="tag tag-purple">Step-by-step guide</span>
+          <span class="tag tag-green">~15 min setup</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. DFY Card ── -->
+  <div>
+    <div class="label">PRODUCT 2 — DFY ($497 / Founder $297) — screenshot at 800×450</div>
+    <div class="card card-dfy">
+      <div class="orb"></div>
+      <div class="orb orb2"></div>
+      <div class="logo-mark" style="color: var(--accent-2); opacity: 0.7;">clawdraft_</div>
+      <div class="price-badge">
+        <div class="price-old">$497</div>
+        <div class="price-amount price-purple">$297</div>
+        <div class="price-label" style="color: var(--accent-2); opacity: 0.8;">founder pricing</div>
+      </div>
+      <div class="card-content">
+        <div class="mono">// done_for_you</div>
+        <div class="card-title">We build it.<br><span class="grad-purple">You post.</span></div>
+        <div class="card-sub">Fill a 5-minute intake form. We generate your personalized content system and deliver it within minutes. Your only job: install OpenClaw.</div>
+        <div class="tags">
+          <span class="tag tag-purple">Fully automated</span>
+          <span class="tag tag-purple">Personalized to your voice</span>
+          <span class="tag tag-green">Live within minutes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. Upgrade Card ── -->
+  <div>
+    <div class="label">PRODUCT 3 — FREQUENCY UPGRADE ($99) — screenshot at 800×450</div>
+    <div class="card card-upgrade">
+      <div class="orb"></div>
+      <div class="logo-mark" style="color: rgba(245,158,11,0.5);">clawdraft_</div>
+      <div class="price-badge">
+        <div class="price-amount price-gold">$99</div>
+        <div class="price-label">one-time add-on</div>
+      </div>
+      <div class="card-content">
+        <div class="mono" style="color: rgba(245,158,11,0.5);">// frequency_upgrade</div>
+        <div class="card-title">More content.<br><span class="grad-gold">More momentum.</span></div>
+        <div class="card-sub">Bump from 1x/week to 3x/week. Sunday, Tuesday, and Thursday at 8pm EST. Add-on for any Clawdraft plan.</div>
+        <div class="tags">
+          <span class="tag tag-gold">3× weekly delivery</span>
+          <span class="tag tag-gold">Sun + Tue + Thu</span>
+          <span class="tag tag-green">Add to any plan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
